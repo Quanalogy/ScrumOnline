@@ -16,5 +16,15 @@
   "bugs": {
     "url": "https://github.com/Quanalogy/ScrumOnline/issues"
   },
-  "homepage": "https://github.com/Quanalogy/ScrumOnline#readme"
+  "homepage": "https://github.com/Quanalogy/ScrumOnline#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "gulp": "^3.9.1"
+  },
+  "devDependencies": {
+    "gulp-typescript": "^2.13.6",
+    "tslint": "^3.13.0",
+    "typescript": "^1.8.10",
+    "typings": "^1.3.1"
+  }
 }
