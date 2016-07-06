@@ -4,6 +4,7 @@
   "description": "This is a repo for a website to help you with managing a scrum project. Anything from backlog, scrum-board, burndown chart, dependency charts and more!",
   "main": "index.js",
   "scripts": {
+    "postinstall": "typings install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
