@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var ts = require('gulp-typescript');
+var include = require('gulp-include');
 var path = require('path');
 var exec = require('child_process').exec;
 
@@ -12,7 +13,7 @@ gulp.task('build:server', function () {
     var tsProject = ts.createProject(path.resolve('./tsconfig.json'));
 
     // Start the transpiling process of all .ts files in the server folder and subdirectories.
-    return gulp.src(path.resolve('./backend/**/*.ts'))
+    return gulp.src([path.resolve('./backend/**/*.ts'), path.resolve('./typings/index.d.ts')])
         .pipe(ts(tsProject))
         .js
         .pipe(gulp.dest(path.resolve('./backend/')))
