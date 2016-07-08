@@ -9,6 +9,7 @@ const port: number = process.env.PORT || 3000;
 const app = express();
 const router = express.Router();            // for routing requests
 const db = mongoClient.connection;
+const uri = 'mongodb://localhost/test'
 // app.use('/app', express.static(path.resolve(__dirname, 'app')));
 // app.use('/libs', express.static(path.resolve(__dirname, 'libs')));
 app.set('view engine', 'ejs');              //using ejs
@@ -18,6 +19,7 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 // =========== DB Stuff =========== \\
+mongoClient.connect(uri);
 db.on('error', console.error);      // console log error if any
 db.once('open', function() {
     // Create your schemas and models here.
@@ -25,7 +27,6 @@ db.once('open', function() {
     const collection = db.collection("users");      // a collection of users
 });
 
-mongoClient.connect('mongodb://localhost/test');
 
 
 const notImplemented = (req: express.Request, res: express.Response) => {
