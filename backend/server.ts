@@ -1,24 +1,34 @@
 // =========== Imports =========== \\
 import express = require("express");
-import path = require("path");
 import logger = require("morgan");
 import bodyParser = require("body-parser");
 import mongoClient = require("mongoose");
+import {Schema} from "mongoose";
+//import * as routes from "../routes/routes.ts";
+import routes = require("../routes/routes");
 // =========== Consts(former var) =========== \\
 const port: number = process.env.PORT || 3000;
 const app = express();
 const router = express.Router();            // for routing requests
 const db = mongoClient.connection;
 const uri = 'mongodb://localhost/test'
+const schema = mongoClient.Schema;
+
+routes(app);
 // app.use('/app', express.static(path.resolve(__dirname, 'app')));
 // app.use('/libs', express.static(path.resolve(__dirname, 'libs')));
 app.set('view engine', 'ejs');              //using ejs
-
 router.use(logger);     // Nice logging of requests
+router.use('/', routes);
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 // =========== DB Stuff =========== \\
+const userSchema = new Schema({     // defines the values associated with an user
+    username: String,
+    password: String
+});
+
 mongoClient.connect(uri);
 db.on('error', console.error);      // console log error if any
 db.once('open', function() {
@@ -26,30 +36,6 @@ db.once('open', function() {
     console.log("Connected to the DB");
     const collection = db.collection("users");      // a collection of users
 });
-
-
-
-const notImplemented = (req: express.Request, res: express.Response) => {
-    res.sendStatus(501);
-};
-
-const renderFrontpage = (req: express.Request, res: express.Response) => {
-    res.sendFile(path.resolve(__dirname, "index.html"));
-};
-
-const pathNotFound = (req: express.Request, res: express.Response) => {
-    res.sendFile(path.resolve(__dirname, "pathNotFound.html"));
-};
-
-const renderIndex = (req: express.Request, res: express.Response) => {      // function for serving the index.ejs file
-    res.render("index");
-};
-
-app.get("/", renderFrontpage);              // Show index - later on login
-app.get("/test", notImplemented);       // paths that should be implemented but isn't at the moment
-app.get("/index", renderIndex);
-app.get("/*", pathNotFound);            // paths that are unknown
-
 
 app.listen(port, function() {
     console.log("Running on port 3000");
